@@ -1,0 +1,135 @@
+int AD8 = 1;  
+int AD9 = 2;
+int AD10 = 3;
+int AD11 = 4;
+int enablePin = 9;
+int in11Pin = 5;
+int in12Pin = 6;
+int in21Pin = 10;
+int in22Pin = 11;
+int expCom1 = A0;
+int expCom2 = A1;
+int trigPin = 13;
+int echoPin = 12;
+
+void setup() 
+{
+  pinMode(AD8, INPUT);
+  pinMode(AD9, INPUT);
+  pinMode(AD10, INPUT);
+  pinMode(AD11, INPUT);
+  pinMode(enablePin, OUTPUT);
+  pinMode(in11Pin, OUTPUT);
+  pinMode(in12Pin, OUTPUT);
+  pinMode(in21Pin, OUTPUT);
+  pinMode(in22Pin, OUTPUT);
+  pinMode(expCom1, OUTPUT);
+  pinMode(expCom2, OUTPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop()
+{
+  
+if ( digitalRead (AD10)== LOW && digitalRead (AD11)== LOW )
+  { 
+    digitalWrite(expCom1, HIGH);
+    digitalWrite(expCom2, LOW); 
+  }
+
+else if ( digitalRead (AD8)== LOW && digitalRead (AD11)== LOW )
+  { 
+     moveLeft();
+  }
+
+else if ( digitalRead (AD9)== LOW && digitalRead (AD10)== LOW )
+  { 
+     moveRight();
+  }
+
+else if ( digitalRead (AD8)== LOW && digitalRead (AD9)== LOW )
+  {
+  long duration, distance;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2)/29.1;
+     if (distance >= 50) 
+     {
+     moveForward(); 
+     }
+     else 
+     {
+      mStop();
+      }
+  }
+
+else if ( digitalRead (AD8)== LOW && digitalRead (AD10)== LOW )
+   { 
+     moveReverse();
+   }
+
+else if ( digitalRead (AD9)== LOW && digitalRead (AD11)== LOW )
+   { 
+     digitalWrite(expCom1, LOW);
+     digitalWrite(expCom2, HIGH);
+   }
+
+else if ( digitalRead (AD8)== LOW && digitalRead (AD9)== LOW && digitalRead (AD11)== LOW )
+  { 
+    digitalWrite(expCom1, HIGH);
+    digitalWrite(expCom2, LOW);
+  }
+  
+else
+  {
+   mStop();
+  } 
+}
+
+
+ void moveForward()
+{
+digitalWrite(in11Pin, HIGH);
+digitalWrite(in21Pin, HIGH);
+digitalWrite(in12Pin, LOW);
+digitalWrite(in22Pin, LOW);
+}
+
+ void moveReverse()
+{
+digitalWrite(in11Pin, LOW);
+digitalWrite(in21Pin, LOW);
+digitalWrite(in12Pin, HIGH);
+digitalWrite(in22Pin, HIGH);
+}
+
+ void moveLeft()
+{
+digitalWrite(in11Pin, HIGH);
+digitalWrite(in21Pin, LOW);
+digitalWrite(in12Pin, LOW);
+digitalWrite(in22Pin, HIGH);
+}
+
+ void moveRight()
+{
+digitalWrite(in11Pin, LOW);
+digitalWrite(in21Pin, HIGH);
+digitalWrite(in12Pin, HIGH);
+digitalWrite(in22Pin, LOW)
+}
+
+ void mStop()
+{
+digitalWrite(in11Pin, LOW);
+digitalWrite(in21Pin, LOW);
+digitalWrite(in12Pin, LOW);
+digitalWrite(in22Pin, LOW);
+digitalWrite(expCom1, LOW);
+digitalWrite(expCom2, LOW);
+}
